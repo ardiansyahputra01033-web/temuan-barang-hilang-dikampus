@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TemuanKu — Aplikasi Temuan Barang Hilang di Lingkungan Kampus
 
 Website demo front-end untuk tugas proyek kampus.
@@ -21,3 +22,6 @@ Website demo front-end untuk tugas proyek kampus.
 
 ## Catatan penting
 Ini adalah prototipe front-end untuk pembelajaran. Akun dan laporan disimpan di browser yang sedang digunakan, bukan database online. Jangan gunakan kata sandi asli/pribadi. Untuk penggunaan nyata, dibutuhkan backend, database, autentikasi yang aman, dan kontrol akses.
+=======
+# temuan-barang-hilang-dikampus
+>>>>>>> 6f3589c77b381a6265d8b8b7416c3bbad401a132
