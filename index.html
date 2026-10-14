@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TemuanKu | Barang Hilang Kampus</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="authView" class="auth-shell">
+    <section class="auth-brand">
+      <div class="brand-mark">TK</div>
+      <p class="eyebrow">PORTAL LAYANAN KAMPUS</p>
+      <h1>Temuan<span>Ku</span></h1>
+      <p class="muted-light">Satu tempat untuk melaporkan, mencari, dan menemukan kembali barang di lingkungan kampus.</p>
+      <div class="auth-benefits">
+        <div>✓ Laporan barang hilang dan temuan</div>
+        <div>✓ Pencarian berdasarkan nama dan lokasi</div>
+        <div>✓ Rekap laporan yang mudah dipantau</div>
+      </div>
+    </section>
+    <section class="auth-panel">
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="showLogin">Masuk</button>
+          <button class="auth-tab" id="showRegister">Daftar akun</button>
+        </div>
+        <form id="loginForm">
+          <h2>Selamat datang!</h2>
+          <p class="muted">Masuk untuk mengelola laporan barang.</p>
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" type="email" placeholder="nama@email.com" required>
+          <label for="loginPassword">Kata sandi</label>
+          <input id="loginPassword" type="password" placeholder="Masukkan kata sandi" required>
+          <button class="btn primary full" type="submit">Masuk ke dashboard</button>
+          <p class="form-note">Demo: daftar akun baru terlebih dahulu untuk masuk.</p>
+        </form>
+        <form id="registerForm" class="hidden">
+          <h2>Buat akun</h2>
+          <p class="muted">Daftarkan akun untuk mulai menggunakan TemuanKu.</p>
+          <label for="registerName">Nama lengkap</label>
+          <input id="registerName" type="text" placeholder="Nama kamu" required>
+          <label for="registerEmail">Email</label>
+          <input id="registerEmail" type="email" placeholder="nama@email.com" required>
+          <label for="registerPassword">Kata sandi</label>
+          <input id="registerPassword" type="password" minlength="4" placeholder="Minimal 4 karakter" required>
+          <button class="btn primary full" type="submit">Daftar akun</button>
+          <p class="form-note">Data demo disimpan di browser ini menggunakan localStorage.</p>
+        </form>
+        <p id="authMessage" class="message" role="status"></p>
+      </div>
+    </section>
+  </div>
+
+  <div id="appView" class="app hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand"><div class="brand-mark small">TK</div><div><strong>TemuanKu</strong><small>Portal Barang Kampus</small></div></div>
+      <div class="nav-label">MENU UTAMA</div>
+      <button class="nav-item active" data-page="dashboard"><span>▦</span> Dashboard</button>
+      <button class="nav-item" data-page="data"><span>▤</span> Data Barang</button>
+      <button class="nav-item" data-page="reports"><span>▧</span> Rekap Laporan</button>
+      <div class="sidebar-bottom">
+        <div class="help-box"><strong>Butuh bantuan?</strong><p>Hubungi petugas kampus untuk verifikasi barang.</p></div>
+        <button id="logoutBtn" class="nav-item logout"><span>↪</span> Keluar / Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="menuToggle" class="menu-toggle" aria-label="Buka menu">☰</button>
+        <div><span class="top-eyebrow">SISTEM INFORMASI KAMPUS</span><strong id="pageHeading">Dashboard</strong></div>
+        <div class="user-pill"><div class="avatar" id="userInitial">U</div><div><strong id="userName">Pengguna</strong><small>Pengguna terdaftar</small></div></div>
+      </header>
+
+      <section id="dashboardPage" class="page">
+        <div class="page-intro">
+          <div><p class="eyebrow">RINGKASAN</p><h1>Dashboard</h1><p class="muted">Pantau laporan barang hilang dan temuan di lingkungan kampus.</p></div>
+          <button class="btn primary" id="quickAdd">＋ Buat laporan</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-icon blue">▤</div><div><p>Total laporan</p><h2 id="totalCount">0</h2><small>Semua data tercatat</small></div></article>
+          <article class="stat-card"><div class="stat-icon orange">⌕</div><div><p>Barang hilang</p><h2 id="lostCount">0</h2><small>Menunggu ditemukan</small></div></article>
+          <article class="stat-card"><div class="stat-icon green">✓</div><div><p>Barang ditemukan</p><h2 id="foundCount">0</h2><small>Sudah ditemukan</small></div></article>
+          <article class="stat-card"><div class="stat-icon purple">◎</div><div><p>Selesai</p><h2 id="doneCount">0</h2><small>Sudah dikembalikan</small></div></article>
+        </div>
+        <div class="content-card">
+          <div class="section-heading"><div><h2>Laporan terbaru</h2><p class="muted">Lima laporan terakhir yang ditambahkan.</p></div><button class="text-button" data-goto="data">Lihat semua →</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Barang</th><th>Jenis</th><th>Lokasi</th><th>Tanggal</th><th>Status</th></tr></thead><tbody id="recentRows"></tbody></table></div>
+          <div id="recentEmpty" class="empty-state"><div class="empty-icon">▤</div><strong>Belum ada laporan</strong><p>Tambahkan laporan pertama untuk mulai menggunakan aplikasi.</p><button class="btn primary" id="emptyAdd">Tambah laporan</button></div>
+        </div>
+      </section>
+
+      <section id="dataPage" class="page hidden">
+        <div class="page-intro">
+          <div><p class="eyebrow">PENGELOLAAN DATA</p><h1>Data Barang</h1><p class="muted">Tambah, edit, cari, dan perbarui laporan barang kampus.</p></div>
+          <button class="btn primary" id="addReportBtn">＋ Tambah laporan</button>
+        </div>
+        <div class="content-card">
+          <div class="toolbar">
+            <div class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Cari nama barang, lokasi, atau pelapor..."></div>
+            <select id="typeFilter" aria-label="Filter jenis"><option value="">Semua jenis</option><option value="Hilang">Barang hilang</option><option value="Temuan">Barang temuan</option></select>
+            <select id="statusFilter" aria-label="Filter status"><option value="">Semua status</option><option value="Menunggu">Menunggu</option><option value="Ditemukan">Ditemukan</option><option value="Selesai">Selesai</option></select>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Barang & deskripsi</th><th>Jenis</th><th>Lokasi</th><th>Tanggal</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="dataRows"></tbody></table></div>
+          <div id="dataEmpty" class="empty-state hidden"><div class="empty-icon">⌕</div><strong>Data tidak ditemukan</strong><p>Coba ubah kata kunci atau filter pencarian.</p></div>
+          <div class="table-foot" id="tableFoot">Menampilkan 0 laporan</div>
+        </div>
+      </section>
+
+      <section id="reportsPage" class="page hidden">
+        <div class="page-intro">
+          <div><p class="eyebrow">RINGKASAN DATA</p><h1>Rekap Laporan</h1><p class="muted">Ringkasan laporan barang berdasarkan jenis dan status.</p></div>
+          <button class="btn secondary" id="printBtn">⎙ Cetak laporan</button>
+        </div>
+        <div class="stats-grid report-stats">
+          <article class="stat-card"><div class="stat-icon blue">▤</div><div><p>Total laporan</p><h2 id="reportTotal">0</h2></div></article>
+          <article class="stat-card"><div class="stat-icon orange">⌕</div><div><p>Barang hilang</p><h2 id="reportLost">0</h2></div></article>
+          <article class="stat-card"><div class="stat-icon green">✓</div><div><p>Barang temuan</p><h2 id="reportFound">0</h2></div></article>
+          <article class="stat-card"><div class="stat-icon purple">◎</div><div><p>Selesai</p><h2 id="reportDone">0</h2></div></article>
+        </div>
+        <div class="content-card">
+          <div class="section-heading"><div><h2>Daftar rekap</h2><p class="muted">Data ini mengikuti seluruh laporan yang tersimpan.</p></div></div>
+          <div class="table-wrap"><table><thead><tr><th>No.</th><th>Nama barang</th><th>Jenis</th><th>Pelapor</th><th>Status</th><th>Lokasi</th></tr></thead><tbody id="reportRows"></tbody></table></div>
+          <div id="reportEmpty" class="empty-state"><strong>Belum ada data rekap</strong><p>Data akan tampil setelah laporan dibuat.</p></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="reportModal">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header"><div><p class="eyebrow">FORMULIR LAPORAN</p><h2 id="modalTitle">Tambah laporan barang</h2></div><button class="icon-button" id="closeModal" aria-label="Tutup">×</button></div>
+      <form id="reportForm">
+        <input type="hidden" id="editId">
+        <div class="form-grid">
+          <div class="field full-field"><label for="itemName">Nama barang *</label><input id="itemName" required placeholder="Contoh: Dompet hitam"></div>
+          <div class="field"><label for="itemType">Jenis laporan *</label><select id="itemType" required><option value="Hilang">Barang hilang</option><option value="Temuan">Barang temuan</option></select></div>
+          <div class="field"><label for="itemStatus">Status *</label><select id="itemStatus" required><option value="Menunggu">Menunggu</option><option value="Ditemukan">Ditemukan</option><option value="Selesai">Selesai</option></select></div>
+          <div class="field"><label for="itemLocation">Lokasi *</label><input id="itemLocation" required placeholder="Contoh: Gedung A, lantai 2"></div>
+          <div class="field"><label for="itemDate">Tanggal kejadian *</label><input id="itemDate" type="date" required></div>
+          <div class="field full-field"><label for="reporterName">Nama pelapor *</label><input id="reporterName" required placeholder="Nama mahasiswa / petugas"></div>
+          <div class="field full-field"><label for="itemDescription">Deskripsi tambahan</label><textarea id="itemDescription" rows="3" placeholder="Warna, ciri khusus, atau informasi lain..."></textarea></div>
+        </div>
+        <p id="formMessage" class="message" role="status"></p>
+        <div class="modal-actions"><button type="button" class="btn secondary" id="cancelModal">Batal</button><button type="submit" class="btn primary">Simpan laporan</button></div>
+      </form>
+    </section>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
